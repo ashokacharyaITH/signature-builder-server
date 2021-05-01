@@ -1,4 +1,4 @@
-# Express + GRAPHQL +  MongoDB + TypeScript MARKET PLACE THE KINGDOM
+# Express + GRAPHQL +  MongoDB + TypeScript SIgnature Builder THE KINGDOM
 
 1. Install dependencies via `yarn` or `npm install`
 2. Run `docker-compose up -d` to start mongodb
