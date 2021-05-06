@@ -26,7 +26,7 @@ import {
     TemplateResolver,
     SignatureResolver,
     UserResolver,
-    TeamResolver
+    TeamResolver, SubscriptionResolver
 } from "./resolvers";
 
 import {responseValidator} from "./validator";
@@ -66,7 +66,7 @@ const port = process.env.PORT || 4000;
   DI.SignatureDraftRepository = DI.orm.em.getRepository(SignatureDraftEntities);
   DI.LinkedPlatformRepository = DI.orm.em.getRepository(LinkedPlatformEntities);
   DI.TemplateRepository = DI.orm.em.getRepository(TemplateEntities);
-  initializeS3({region:'ap-southeast-2',accessKeyId:process.env.AWS_ACCESS_KEY as string,secretAccessKey:process.env.AWS_ACCESS_SECRET as string,destinationBucketName:'signaturebuilder-test'})
+  initializeS3({region:'ap-southeast-2',accessKeyId:process.env.AWS_ACCESS_KEY as string,secretAccessKey:process.env.AWS_ACCESS_SECRET as string,destinationBucketName:'signaturebildr'})
 
   const app = express();
 
@@ -96,7 +96,7 @@ const port = process.env.PORT || 4000;
   const apolloServer = new ApolloServer({
     uploads:false,
     schema:await buildSchema({
-      resolvers:[AccountResolver,SocialResolver,HubspotResolver,OnBoardResolver,GoogleResolver,TemplateResolver,SignatureResolver,UserResolver,TeamResolver], //initialise the resolver for graphql appolo server
+      resolvers:[SubscriptionResolver,AccountResolver,SocialResolver,HubspotResolver,OnBoardResolver,GoogleResolver,TemplateResolver,SignatureResolver,UserResolver,TeamResolver], //initialise the resolver for graphql appolo server
       validate: async (argValue:any) => {
         const response = await responseValidator(argValue);  //validate the structure of object
         if (response) {
@@ -108,7 +108,7 @@ const port = process.env.PORT || 4000;
     }),
     context:({req,res})=>({req,res,em:DI.orm.em}) // make req,res,em avialable in graphql server context
   })
-  app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 })); //file size
+  app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 1 })); //file size
   apolloServer.applyMiddleware({app,cors:false, path: '/graphql'}); //graphql Router
   //
   app.use('/account', AccountRouter); // for refresh token and other for account, basically handling browser cookies

@@ -8,6 +8,7 @@ import { UsersEntities } from "./users.entities";
 import { SignatureEntities } from "./signature.entities";
 import { PasswordHistoryEntities } from "./passwordHistory";
 import { TeamEntities } from "./team.entities";
+import { AccountProfileEntities } from "./accountProfile.entities";
 
 @ObjectType()
 @Entity()
@@ -23,12 +24,12 @@ export class AccountEntities extends BaseEntities{
     @Property()
     name?: string;
 
-    @Field()
+    @Field({nullable:true})
     @Property()
     status?: string;
 
 
-    @Field()
+    @Field({nullable:true})
     @Property()
     stripe_customer_id?: string;
 
@@ -43,7 +44,7 @@ export class AccountEntities extends BaseEntities{
     @Property()
     refresh_token_version?: number=0;
 
-    @Field(type =>Boolean)
+    @Field(type =>Boolean,{nullable:true})
     @Property()
     terms_accepted? = false;
 
@@ -70,6 +71,10 @@ export class AccountEntities extends BaseEntities{
     @Field(() => CompanyEntities, { nullable: true })
     @OneToOne(() => CompanyEntities, company => company.account,{owner: true, orphanRemoval: true,nullable:true})
     company?: CompanyEntities;
+
+    @Field(() => AccountProfileEntities, { nullable: true })
+    @OneToOne(() => AccountProfileEntities, profile => profile.account,{owner: true, orphanRemoval: true,nullable:true})
+    profile?: AccountProfileEntities;
 
     @Field(() => SubscriptionEntities, { nullable: true })
     @OneToOne(() => SubscriptionEntities, subscription => subscription.account,{owner: true, orphanRemoval: true,nullable:true})

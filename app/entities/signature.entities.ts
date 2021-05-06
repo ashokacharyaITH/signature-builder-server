@@ -2,11 +2,6 @@ import {Cascade, Collection, Entity, ManyToMany, ManyToOne, OneToMany, OneToOne,
 import {Field, ObjectType} from "type-graphql";
 import {BaseEntities} from "./base.entities";
 import {AccountEntities} from "./account.entities";
-import {TokenEntities} from "./token.entities";
-import {SubscriptionPlanEntities} from "./subscriptionPlan.entities";
-import { SubscriptionEntities } from "./subscription.entities";
-import { AddressEntities } from "./address.entities";
-import { SocialsEntities } from "./socials.entities";
 import { UsersEntities } from "./users.entities";
 import { TemplateEntities } from "./template.entities";
 import { PropertiesEntities } from "./properties.entities";
@@ -19,11 +14,11 @@ import { SignatureDraftEntities } from "./signatureDraft.entities";
 @Entity()
 export class SignatureEntities extends BaseEntities{
 
-    @Field()
+    @Field({nullable:true})
     @Property()
     name?: string;
 
-    @Field()
+    @Field({nullable:true})
     @Property()
     campaign?: string;
 
@@ -31,11 +26,11 @@ export class SignatureEntities extends BaseEntities{
     @OneToMany(() => UsersEntities, (s:UsersEntities) => s.signature)
     users? = new Collection<UsersEntities>(this);
 
-    @Field(() => AccountEntities)
+    @Field(() => AccountEntities,{nullable:true})
     @ManyToOne(() => AccountEntities,{ nullable: true })
     account!: AccountEntities;
 
-    @Field(() => TemplateEntities)
+    @Field(() => TemplateEntities,{nullable:true})
     @ManyToOne(() => TemplateEntities,{ nullable: true })
     template!: TemplateEntities;
 
@@ -43,9 +38,10 @@ export class SignatureEntities extends BaseEntities{
     @OneToOne(() => PropertiesEntities, properties => properties.signature,{owner: true, orphanRemoval: true})
     properties?: PropertiesEntities;
 
-    @Field()
+    @Field({nullable:true})
     @Property()
     hasDraft: boolean=false; //
+
 
     @Field(() => SignatureDraftEntities, { nullable: true })
     @OneToOne(() => SignatureDraftEntities, draft => draft.signature,{owner: true, orphanRemoval: true})

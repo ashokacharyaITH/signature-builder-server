@@ -1,14 +1,10 @@
 import {
-    Cascade, Collection,
     Entity,
-    ManyToOne, OneToMany, OneToOne,
     Property,
 } from "@mikro-orm/core";
 import {Field, ObjectType} from "type-graphql";
 import {BaseEntities} from "./base.entities";
-import { CompanyEntities } from "./company.entities";
-import { SocialsEntities } from "./socials.entities";
-import { AddressEntities } from "./address.entities";
+
 
 
 @ObjectType()
@@ -22,6 +18,7 @@ export class SocialDetailsEntities extends BaseEntities{
     @Field()
     @Property()
     icon_round!: string;
+
 
     @Field()
     @Property()

@@ -102,3 +102,34 @@ export class StripeCardType {
     @Field(() => String, {nullable: true})
     type?: string | null;
 }
+
+
+
+@InputType()
+export class SubscriptionPostInput {
+    @Field(() => String, {nullable: true})
+    customerId?: string | null;
+    @Field(() => String, {nullable: true})
+    renewDate?: string | null;
+    @Field(() => String, {nullable: true})
+    status?: string | null;
+    @Field(() => String, {nullable: true})
+    latest_invoice?: string | null;
+    @Field(() => String, {nullable: true})
+    invoiceStatus?: string | null;
+    @Field(() => String, {nullable: true})
+    invoiceId?: string | null;
+    @Field(() => String, {nullable: true})
+    quantity?: string | null;
+    @Field(() => String, {nullable: true})
+    subscriptionPlan?: string | null;
+    @Field(() => String, {nullable: true})
+    paymentMethodId?: string | null;
+    @Field(() => String, {nullable: true})
+    subscriptionId?: string | null;
+    @Field(() => String, {nullable: true})
+    productId?: string | null;
+    @Field(() => String, {nullable: true})
+    price?: string | null;
+
+}

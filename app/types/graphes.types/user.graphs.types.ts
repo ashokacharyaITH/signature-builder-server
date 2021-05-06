@@ -91,5 +91,5 @@ export class UserResponse {
     @Field(() =>[FieldError],{nullable:true})
     errors?:FieldError[]|null;
     @Field(() =>UsersEntities,{nullable:true})
-    users?:UsersEntities;
+    users?:UsersEntities|null;
 }

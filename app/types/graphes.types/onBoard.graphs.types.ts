@@ -145,7 +145,25 @@ export class onBoardImportInput {
 }
 
 
+@InputType()
+export class OnBoardProfileInput {
 
+    @Field()
+    @IsString()
+    role?:string
+
+    @Field()
+    @IsString()
+    phone?:string
+
+    @Field()
+    @IsString()
+    mobile?:string
+
+    @Field(() =>[SocialInput],{nullable:true})
+    socials?: [SocialInput]|null;
+
+}
 
 
 
@@ -156,6 +174,13 @@ export class OnBoardFormResponseTypes {
     errors?:FieldError[]|null;
     @Field(() =>String,{nullable:true})
     accessToken?:String|null;
+    @Field(() =>AccountEntities,{nullable:true})
+    account?:AccountEntities|null;
+}
+@ObjectType()
+export class OnBoardProfileResponseTypes {
+    @Field(() =>[FieldError],{nullable:true})
+    errors?:FieldError[]|null;
     @Field(() =>AccountEntities,{nullable:true})
     account?:AccountEntities|null;
 }
@@ -173,6 +198,8 @@ export class OnBoardCompanyResponseTypes {
     errors?:FieldError[]|null;
     @Field(() =>CompanyEntities,{nullable:true})
     company?:CompanyEntities;
+    @Field(() =>AccountEntities,{nullable:true})
+    account?:AccountEntities|null;
 
 }
 
@@ -184,6 +211,8 @@ export class OnBoardSubscriptionResponseTypes {
     subscription?:SubscriptionEntities;
     @Field(() =>StripeCardType,{nullable:true})
     billing?:StripeCardType;
+    @Field(() =>AccountEntities,{nullable:true})
+    account?:AccountEntities|null;
 }
 
 @ObjectType()
@@ -192,5 +221,9 @@ export class OnBoardImportResponseTypes {
     errors?:FieldError[]|null;
     @Field(() =>[UsersEntities],{nullable:true})
     users?:UsersEntities[];
+    @Field(() =>AccountEntities,{nullable:true})
+    account?:AccountEntities|null;
+    @Field(() =>SubscriptionEntities,{nullable:true})
+    subscription?:SubscriptionEntities;
 }
 

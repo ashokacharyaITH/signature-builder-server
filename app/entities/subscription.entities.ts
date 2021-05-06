@@ -1,30 +1,29 @@
 import { Entity, ManyToOne, OneToOne, Property } from "@mikro-orm/core";
 import {Field, ObjectType} from "type-graphql";
 import {BaseEntities} from "./base.entities";
-import {SubscriptionPlanEntities} from "./subscriptionPlan.entities";
 import {AccountEntities} from "./account.entities";
 
 @ObjectType()
 @Entity()
 export class SubscriptionEntities extends BaseEntities{
 
-    @Field()
+    @Field({ nullable: true })
     @Property()
     subscriptionId!: string;
 
-    @Field()
+    @Field({ nullable: true })
     @Property()
     customerId!: string;
 
-    @Field()
+    @Field({ nullable: true })
     @Property()
     paymentMethodId!: string;
 
-    @Field()
+    @Field({ nullable: true })
     @Property()
-    renewDate?: string;
+    renewDate?: number;
 
-    @Field()
+    @Field({ nullable: true })
     @Property()
     status?:string;
 
@@ -34,25 +33,33 @@ export class SubscriptionEntities extends BaseEntities{
 
     @Field({ nullable: true })
     @Property()
+    latest_invoice?:string;
+
+    @Field({ nullable: true })
+    @Property()
     invoiceId?:string;
 
-    @Field()
+    @Field({ nullable: true })
     @Property()
     price!: string;
 
-    @Field()
+    @Field({ nullable: true })
     @Property()
     productId?:string;
 
-    @Field()
+    @Field({ nullable: true })
     @Property({type: Number})
     quantity?: Number;
+
+    @Field({ nullable: true })
+    @Property({type: Number})
+    inUse: Number=0;
 
     // @Field(() => SubscriptionPlanEntities, { nullable: true })
     // @ManyToOne(() => SubscriptionPlanEntities, { nullable: true })
     // subscriptionPlan?: SubscriptionPlanEntities;
 
-    @Field()
+    @Field({ nullable: true })
     @Property()
     subscriptionPlan?:string;
 
@@ -66,13 +73,14 @@ export class SubscriptionEntities extends BaseEntities{
         this.customerId = options.customerId;
         this.renewDate = options.renewDate;
         this.status = options.status;
-        this.productId =options.productId;
         this.paymentMethodId =options.paymentMethodId;
         this.invoiceStatus =options.invoiceStatus;
         this.invoiceId =options.invoiceId;
         this.quantity=options.quantity
         this.account = options.account;
         this.subscriptionPlan = options.subscriptionPlan;
+        this.price = options.price;
+        this.productId = options.productId;
 
 
     }

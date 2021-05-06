@@ -5,21 +5,33 @@ import { AccountPasswordChangeInput } from "../../types/graphes.types/accounts.g
 import argon2 from "argon2";
 import {sendEmail} from "../../helper";
 import { errors } from "../../validator";
+import { SubscriptionBillingService } from "./subscription.service";
 const AccountBasics=async(Account:any)=>{
     return {
         name:Account.name,
         email:Account.email,
         id:Account.id,
         status:Account.status,
+        profile:Account.profile,
         terms_accepted:Account.status,
     }
 }
 export const accountInfo=async(account:any)=>{
     try{
-    let accountLatest:any = await DI.em.findOne(AccountEntities, {id: account.id as string}, ['users','teams','company','subscription','company.socials','company.socials.details','company.address']);
+    let accountLatest:any = await DI.em.findOne(AccountEntities, {id: account.id as string}, ['users','teams','company','subscription','subscription','company.socials','company.socials','company.address','profile','profile.socials','profile.socials']);
+
     const template = await DI.TemplateRepository.findAll();
-    let signature:any = await DI.SignatureRepository.find({account: accountLatest}, {populate:['properties','template','draft'],limit:20,offset:0}); //initialise with 20 only
-    let users:any = await DI.UsersRepository.find({account: accountLatest}, {populate:['signature','socials','socials.details'],limit:20,offset:0}); //initialise with 20 only
+    let signature:any = await DI.SignatureRepository.find({account: accountLatest}, {populate:['users','properties','template','draft','draft.properties'],limit:20,offset:0}); //initialise with 20 only
+    let users:any = await DI.UsersRepository.find({account: accountLatest}, {populate:['signature','signature.properties','socials','socials','teams'],limit:20,offset:0}); //initialise with 20 only
+    let socials:any = await DI.SocialDetailsRepository.findAll();
+       let billing=null
+        if(account.subscription){
+            if(account.subscription.paymentMethodId){
+                billing = await SubscriptionBillingService(account.subscription.paymentMethodId);
+            }
+
+         }
+
     const basic =await AccountBasics(accountLatest)
     return {
         teams: accountLatest.teams,
@@ -29,11 +41,13 @@ export const accountInfo=async(account:any)=>{
         subscription: accountLatest.subscription,
         template: template,
         account: basic,
-        billing:null,
+        billing:billing,
+        socials:socials,
         accessToken: createAccessToken(account),
     }
     }catch(e){
-        return { errors:[{field:"template",message:e.message}] };
+        console.log(e.message,"here error")
+        return { errors:[{field:"account",message:e.message}] };
     }
 }
 export const sendEmailForgot = async (account:AccountEntities, token:string) => {

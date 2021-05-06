@@ -8,12 +8,12 @@ import {
     ContextGraphsTypes,
     HubspotAuthTypes, onBoardImportInput,
     onBoardFormInput, onBoardCompanyInput, onBoardSubscriptionInput,
-    onBoardHubspotInput
+    onBoardHubspotInput, OnBoardProfileInput, OnBoardProfileResponseTypes
 } from "../types";
 import { hubspotCreateRefreshToken, hubspotProvideAuthUrl } from "../service/hubspot.service/hubspot.service";
 
 import { FileUpload, GraphQLUpload } from "graphql-upload";
-import { S3StreamUpload } from "../service";
+import { OnBoardProfileService, OnBoardSubscriptionService, S3StreamUpload } from "../service";
 import {
     OnBoardCompanyService,
     OnBoardFormService,
@@ -83,7 +83,7 @@ export class OnBoardResolver {
                 const {  createReadStream, filename, mimetype, encoding }:any = await image;
                 responsePromise=await S3StreamUpload({stream:createReadStream,filename:filename,mimetype:mimetype})
             }
-             const newOption={...options,image:responsePromise.path,accountEmail:payload!.account.email}
+             const newOption={...options,image:responsePromise.path,account:payload!.account}
             const response = OnBoardCompanyService(newOption)
             return response;
 
@@ -92,13 +92,35 @@ export class OnBoardResolver {
         }
     }
 
+    @Mutation(() => OnBoardProfileResponseTypes )
+    @UseMiddleware(isTokenValid)//update in context eh.payload
+    async onBoardProfile(
+        @Arg('image',()=>GraphQLUpload) image:FileUpload|null,
+        @Arg('options') options:OnBoardProfileInput, @Ctx() {em, res, payload}: ContextGraphsTypes) {
+        if(payload!.status=="success"){
+            let responsePromise:any={path:'',id:''}
+            if(image){
+                const {  createReadStream, filename, mimetype, encoding }:any = await image;
+                responsePromise=await S3StreamUpload({stream:createReadStream,filename:filename,mimetype:mimetype})
+                if(responsePromise.errors){
+                    return responsePromise;
+                }
+            }
+            const newOption={...options,image:responsePromise.path,account:payload!.account}
+            const response = OnBoardProfileService(newOption)
+            return response;
+
+        }else{
+            return {errors:[{field:"account",message:"Invalid Account"}]}
+        }
+    }
     @Mutation(() => OnBoardSubscriptionResponseTypes )
     @UseMiddleware(isTokenValid)//update in context eh.payload
     async onBoardSubscription(
         @Arg('options') options:onBoardSubscriptionInput, @Ctx() {em, res, payload}: ContextGraphsTypes) {
         if(payload!.status=="success"){
             const newOption = {...options,account:payload!.account}
-            const subscription =SubscriptionCreateService(newOption);
+            const subscription =OnBoardSubscriptionService(newOption);
             return subscription;
 
         }else{

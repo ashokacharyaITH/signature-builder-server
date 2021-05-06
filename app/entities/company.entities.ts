@@ -2,12 +2,8 @@ import {Cascade, Collection, Entity, ManyToMany, ManyToOne, OneToMany, OneToOne,
 import {Field, ObjectType} from "type-graphql";
 import {BaseEntities} from "./base.entities";
 import {AccountEntities} from "./account.entities";
-import {TokenEntities} from "./token.entities";
-import {SubscriptionPlanEntities} from "./subscriptionPlan.entities";
-import { SubscriptionEntities } from "./subscription.entities";
 import { AddressEntities } from "./address.entities";
 import { SocialsEntities } from "./socials.entities";
-import { UsersEntities } from "./users.entities";
 
 
 
@@ -36,9 +32,6 @@ export class CompanyEntities extends BaseEntities{
     @Property()
     footnote!: string;
 
-    @Field()
-    @Property()
-    hubId?: string;
 
     @Field(() => [AddressEntities], { nullable: true })
     @OneToMany(() => AddressEntities, (s:AddressEntities) => s.company, { cascade: [Cascade.ALL] })
@@ -57,6 +50,7 @@ export class CompanyEntities extends BaseEntities{
         super();
         this.name = options.name;
         this.image = options.image;
+        this.url = options.url;
         this.phone = options.phone;
         this.footnote = options.footnote;
         this.account=options.account;

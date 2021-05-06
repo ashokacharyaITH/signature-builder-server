@@ -2,23 +2,19 @@ import {
     Cascade,
     Collection,
     Entity,
-    Enum,
-    Filter, Index, ManyToMany,
+    Index, ManyToMany,
     ManyToOne,
     OneToMany,
-    OneToOne,
     Property,
-    Unique
 } from "@mikro-orm/core";
 import {Field, ObjectType} from "type-graphql";
 import {BaseEntities} from "./base.entities";
-import {CompanyEntities} from "./company.entities";
-import { SocialsEntities } from "./socials.entities";
 import { AccountEntities } from "./account.entities";
 import { SignatureEntities } from "./signature.entities";
 import { LinkedPlatformEntities } from "./linkedPlatform";
 import { UserSignatureHistoryEntities } from "./userSignatureHistory";
 import { TeamEntities } from "./team.entities";
+import { SocialsEntities } from "./socials.entities";
 
 
 @ObjectType()
@@ -33,31 +29,31 @@ export class UsersEntities extends BaseEntities{
     @Property()
     name?: string;
 
-    @Field()
+    @Field({nullable:true})
     @Property()
     hub_id!: string;
 
-    @Field()
+    @Field({nullable:true})
     @Property()
-    image!: string;
+    image?: string;
 
-    @Field()
+    @Field({nullable:true})
     @Property()
-    role!: string;
+    role?: string;
 
-    @Field()
+    @Field({nullable:true})
     @Property()
-    phone!: string;
+    phone?: string;
 
-    @Field()
+    @Field({nullable:true})
     @Property()
-    mobile!: string;
+    mobile?: string;
 
-    @Field()
+    @Field({nullable:true})
     @Property()
-    passcode!: string;
+    passcode?: string;
 
-    @Field()
+    @Field({nullable:true})
     @Property()
     assigned: boolean=false;
 
@@ -65,24 +61,20 @@ export class UsersEntities extends BaseEntities{
     @ManyToMany(() => TeamEntities, (s:TeamEntities) => s.users,{owner:true})
     teams? = new Collection<TeamEntities>(this);
 
-    @Field()
-    @Property()
-    assignable: boolean=false;
-
 
     @Field(() => AccountEntities,{ nullable: true })
     @ManyToOne(() => AccountEntities,{ nullable: true })
     account?: AccountEntities;
 
-    @Field(() => SignatureEntities)
+    @Field(() => SignatureEntities,{nullable:true})
     @ManyToOne(() => SignatureEntities,{ nullable: true })
-    signature?: SignatureEntities;
+    signature?: SignatureEntities|null;
 
     @Field(() => [SocialsEntities], { nullable: true })
     @OneToMany(() => SocialsEntities, (s:SocialsEntities) => s.user, { cascade: [Cascade.ALL] })
     socials? = new Collection<SocialsEntities>(this);
 
-    @Field()
+    @Field({nullable:true})
     @Property()
     isLinked: boolean=false;
 
@@ -94,7 +86,7 @@ export class UsersEntities extends BaseEntities{
     @OneToMany(() => UserSignatureHistoryEntities, (l) => l.user, { cascade: [Cascade.ALL] })
     signatureHistory? = new Collection<UserSignatureHistoryEntities>(this);
 
-    @Field()
+    @Field({nullable:true})
     @Property()
     latestSignature?: string;
 

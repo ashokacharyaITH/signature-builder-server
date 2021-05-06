@@ -1,12 +1,6 @@
-import {Cascade, Collection, Entity, ManyToMany, ManyToOne, OneToMany, OneToOne, Property} from "@mikro-orm/core";
+import { Entity,  OneToOne, Property} from "@mikro-orm/core";
 import {Field, ObjectType} from "type-graphql";
 import {BaseEntities} from "./base.entities";
-import {AccountEntities} from "./account.entities";
-import {TokenEntities} from "./token.entities";
-import {SubscriptionPlanEntities} from "./subscriptionPlan.entities";
-import { SubscriptionEntities } from "./subscription.entities";
-import { AddressEntities } from "./address.entities";
-import { SocialsEntities } from "./socials.entities";
 import { SignatureEntities } from "./signature.entities";
 import { SignatureDraftEntities } from "./signatureDraft.entities";
 

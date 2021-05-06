@@ -13,5 +13,5 @@ export * from './token.entities';
 export * from "./users.entities";
 export * from "./userSignatureHistory"
 export * from './subscription.entities';
-export * from './subscriptionPlan.entities';
 export * from './team.entities';
+export * from './accountProfile.entities';

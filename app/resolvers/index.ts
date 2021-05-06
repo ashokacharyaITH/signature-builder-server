@@ -7,3 +7,4 @@ export * from "./template.resolver";
 export * from "./signature.resolver";
 export * from "./user.resolver";
 export * from "./team.resolver"
+export * from "./subscription.resolver"

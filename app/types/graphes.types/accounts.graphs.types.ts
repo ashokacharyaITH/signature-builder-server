@@ -1,14 +1,16 @@
 import { Field, InputType, ObjectType } from "type-graphql";
 import { FieldError } from "./error.graphs.types";
 import {
+    AccountProfileEntities,
     CompanyEntities,
-    SignatureEntities,
+    SignatureEntities, SocialDetailsEntities,
     SubscriptionEntities,
     TeamEntities,
     TemplateEntities,
     UsersEntities
 } from "../../entities";
 import { IsEmail, IsString } from "class-validator";
+import { StripeCardType } from "./subscriptions.graphs.types";
 
 
 @ObjectType()
@@ -24,6 +26,8 @@ export class AccountInfo {
     status?:String;
     @Field(() =>String,{nullable:true})
     terms_accepted?:String;
+    @Field(() =>AccountProfileEntities,{nullable:true})
+    profile?:AccountProfileEntities|null;
 }
 @ObjectType()
 export class AccountResponse {
@@ -41,12 +45,14 @@ export class AccountResponse {
     subscription?:SubscriptionEntities|null;
     @Field(() =>[TemplateEntities],{nullable:true})
     template?:TemplateEntities[]|null;
+    @Field(() =>[SocialDetailsEntities],{nullable:true})
+    socials?:SocialDetailsEntities[]|null;
     @Field(() =>AccountInfo,{nullable:true})
     account?:AccountInfo|null;
     @Field(() =>String,{nullable:true})
     accessToken?:String|null;
-    @Field(() =>String,{nullable:true})
-    billing?:String|null;
+    @Field(() =>StripeCardType,{nullable:true})
+    billing?:StripeCardType;
 }
 //AccountPasswordChangeInput
 

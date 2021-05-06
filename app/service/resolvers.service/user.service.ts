@@ -1,13 +1,9 @@
 import {DI} from "../../server";
 import {
     AccountEntities,
-    AddressEntities,
-    CompanyEntities,
     OwnerSocialType,
     SignatureEntities,
-    SocialDetailsEntities,
     SocialsEntities,
-    TeamEntities,
     UsersEntities
 } from "../../entities";
 import { emailSend } from "../email.service";
@@ -278,9 +274,7 @@ export const UserUpdateService=async(option:any,image:any)=>{
         user.socials.removeAll(); // clean it and
           for(let i=0;i<option.socials.length;i++){
             const optionSocials=option.socials[i];
-            const detail=await DI.em.findOne(SocialDetailsEntities, {id: optionSocials.id as string});
-
-            const socials=new SocialsEntities({link:optionSocials.link,details:detail,user:user,ownerType:OwnerSocialType.user});
+            const socials=new SocialsEntities({link:optionSocials.link,details:optionSocials.id,user:user,ownerType:OwnerSocialType.user});
             user!.socials!.add(socials);
         }
         user.image=imagePath;
